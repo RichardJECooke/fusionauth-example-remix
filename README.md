@@ -19,7 +19,7 @@ The files you will need to copy from this demo to any other Remix app you'd like
 
 ```
 .gitignore
-env.example
+.env
 package.json
 app/auth.server.ts
 app/session.server.ts
