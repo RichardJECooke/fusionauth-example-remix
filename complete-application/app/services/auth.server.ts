@@ -37,5 +37,5 @@ const authStrategy = new OAuth2Strategy(
 
 authenticator.use(
     authStrategy,
-    "provider-name" // this is optional, but if you setup more than one OAuth2 instance you will need to set a custom name to each one
+    "FusionAuth" // this is optional, but if you setup more than one OAuth2 instance you will need to set a custom name to each one
 );
