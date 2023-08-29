@@ -6,6 +6,5 @@ export let loader: LoaderFunction = async ({ request }) => {
   return await authenticator.authenticate("FusionAuth", request, {
     successRedirect: "/dashboard",
     failureRedirect: "/error",
-  },
-  );
+  });
 };

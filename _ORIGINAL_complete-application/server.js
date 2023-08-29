@@ -7,7 +7,7 @@ const { createRequestHandler } = require("@remix-run/express");
 const BUILD_DIR = path.join(process.cwd(), "build");
 
 const app = express();
-require('dotenv').config()
+require('dotenv').config();
 
 app.use(compression());
 

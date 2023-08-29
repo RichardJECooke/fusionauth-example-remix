@@ -7,9 +7,7 @@ export default function Index() {
       <h3>You are not logged in. Please click the link below to try again.</h3>
       <ul>
       <li>
-          <Link
-            to="login"
-          >
+          <Link to="login">
             Login
           </Link>
         </li>

@@ -14,7 +14,6 @@ authenticator.use(
             clientID: process.env.CLIENT_ID || "",
             clientSecret: process.env.CLIENT_SECRET || "",
             callbackURL: process.env.AUTH_CALLBACK_URL || "",
-
         },
         async ({ accessToken, refreshToken, extraParams, profile, context }) => {
             // here you can use the params above to get the user and return it
