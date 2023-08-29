@@ -1,5 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -8,10 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
-export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-];
+import css from "~/css/changebank.css";
 
 export default function App() {
   return (
@@ -31,3 +28,14 @@ export default function App() {
     </html>
   );
 }
+
+export const links: LinksFunction = () => [
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: "stylesheet", href: css },
+];
+
+export const meta: V2_MetaFunction = () => {
+  return [
+    { title: "FusionAuth OpenID and PKCE example" },
+  ];
+};
