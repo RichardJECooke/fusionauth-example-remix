@@ -7,6 +7,6 @@ export const loader: LoaderFunction = async ({request}) => {
   console.log('on callback handler');
   await authenticator.authenticate("FusionAuth", request, {
     successRedirect: "/account",
-    failureRedirect: "/login",
+    failureRedirect: "/",
   });
 }

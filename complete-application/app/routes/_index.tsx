@@ -1,4 +1,13 @@
 import { Link } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node"
+import { authenticator } from "~/services/auth.server";
+
+export const loader: LoaderFunction = async ({request}) => {
+  let user = await authenticator.isAuthenticated(request, {
+      successRedirect: "/account",
+  });
+  return user;
+}
 
 export default function Index() {
   return (
@@ -7,7 +16,6 @@ export default function Index() {
         <div id="logo-header">
           <img src="https://fusionauth.io/assets/img/samplethemes/changebank/changebank.svg" />
           <Link to="/login" className="button-lg">Login</Link>
-          {/* <a className="button-lg" href="{% url 'oidc_authentication_init' %}">Login</a> */}
         </div>
 
         <div id="menu-bar" className="menu-bar">
