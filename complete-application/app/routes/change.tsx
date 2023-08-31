@@ -11,6 +11,22 @@ export const loader: LoaderFunction = async ({request}) => {
 
 export default function Change() {
     const email: string = useLoaderData<typeof loader>();
+
+    const [dollarAmt, setDollarAmt] = useState('0.00');
+    const [change, setChange] = useState<Record<string, string> | null>(null);
+
+    function getChange() {
+        const dollarAmtValue: number = parseFloat(dollarAmt);
+        const nickels: number = Math.floor(dollarAmtValue / 0.05);
+        const pennies: number = Math.ceil((dollarAmtValue - (0.05 * nickels)) / 0.01);
+        const calculatedChange: Record<string, string> = {
+            total: dollarAmtValue.toFixed(2),
+            nickels: nickels.toLocaleString(),
+            pennies: pennies.toLocaleString()
+        };
+        setChange(calculatedChange);
+    }
+
     return (
         <div id="page-container">
             <div id="page-header">
@@ -28,30 +44,28 @@ export default function Change() {
                 </div>
             </div>
 
-            {/* <div style={{flex: '1'}}>
+            <div style={{flex: '1'}}>
                 <div className="column-container">
                     <div className="app-container change-container">
                         <h3>We Make Change</h3>
 
                         // {% if change.error %}
-                        <div className="error-message"> change.error "</div>
+                        <div className="error-message"> Please enter a dollar amount </div>
+
                         // {% else %}
                         <div className="change-message">
                            {' We can make change for ${{ change.total }} with {{ change.nickels }} nickels and {{ change.pennies }} pennies! '}
                         </div>
                         // {% endif %}
 
-                        <form method="post" action="{% url 'change' %}">
-                            // {% csrf_token %}
-                            <div className="h-row">
-                                <div className="change-label">Amount in USD: $</div>
-                                <input className="change-input" name="amount" value="0.00" />
-                                <input className="change-submit" type="submit" value="Make Change" />
-                            </div>
-                        </form>
+                        <div className="h-row">
+                            <div className="change-label">Amount in USD: $</div>
+                            <input className="change-input" name="amount" value="0.00" />
+                            <button className="change-submit" onClick={getChange} value="Make Change" />
+                        </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }
