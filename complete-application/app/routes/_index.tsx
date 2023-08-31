@@ -23,7 +23,7 @@ export default function Index() {
           <div className="content-container">
             <div style={{marginBottom: '100px'}}>
               <h1>Welcome to Changebank</h1>
-              <p>To get started, <a href="{% url 'oidc_authentication_init' %}">log in or create a new account</a>.</p>
+              <p>To get started, <Link to="/login" >log in or create a new account</Link>.</p>
             </div>
           </div>
           <div style={{flex: '0'}}>
