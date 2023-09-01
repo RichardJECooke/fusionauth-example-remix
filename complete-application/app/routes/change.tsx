@@ -56,7 +56,6 @@ export default function Change() {
                             <div className="error-message"> Please enter a dollar amount </div>
                         }
 
-
                         { !state.hasChange &&
                             <div className="error-message"><br/> </div>
                         }
@@ -68,9 +67,11 @@ export default function Change() {
                         }
 
                         <div className="h-row">
-                            <div className="change-label">Amount in USD: $</div>
-                            <input className="change-input" name="amount" value={state.total} onChange={onTotalChange} />
-                            <button className="change-submit" onClick={makeChange} value="Make Change" />
+                            <form onSubmit={(e) => { e.preventDefault(); makeChange(); }} >
+                                <div className="change-label">Amount in USD: $</div>
+                                <input className="change-input" name="amount" value={state.total} onChange={onTotalChange} />
+                                <input className="change-submit" type="submit" value="Make Change" />
+                            </form>
                         </div>
                     </div>
                 </div>
