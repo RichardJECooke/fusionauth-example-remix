@@ -1,5 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { useState, ChangeEvent } from "react";
 import { authenticator } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({request}) => {
@@ -11,20 +12,22 @@ export const loader: LoaderFunction = async ({request}) => {
 
 export default function Change() {
     const email: string = useLoaderData<typeof loader>();
+    const [state, setState] = useState({error: false, hasChange: false, total: '', nickels: '', pennies: ''});
 
-    const [dollarAmt, setDollarAmt] = useState('0.00');
-    const [change, setChange] = useState<Record<string, string> | null>(null);
+    function onTotalChange(e: ChangeEvent<HTMLInputElement>): void {
+        setState({ ...state, total: e.target.value, hasChange: false });
+    }
 
-    function getChange() {
-        const dollarAmtValue: number = parseFloat(dollarAmt);
-        const nickels: number = Math.floor(dollarAmtValue / 0.05);
-        const pennies: number = Math.ceil((dollarAmtValue - (0.05 * nickels)) / 0.01);
-        const calculatedChange: Record<string, string> = {
-            total: dollarAmtValue.toFixed(2),
-            nickels: nickels.toLocaleString(),
-            pennies: pennies.toLocaleString()
-        };
-        setChange(calculatedChange);
+    function makeChange() {
+        const newState = { error: false, hasChange: true, total: '', nickels: '', pennies: ''};
+        const total = Math.trunc(parseFloat(state.total)*100)/100;
+        newState.total = isNaN(total) ? '' : total.toFixed(2);
+        const nickels = Math.floor(total / 0.05);
+        newState.nickels = nickels.toLocaleString();
+        const pennies = ((total - (0.05 * nickels)) / 0.01);
+        newState.pennies = Math.ceil((Math.trunc(pennies*100)/100)).toLocaleString();
+        newState.error = ! /^(\d+(\.\d*)?|\.\d+)$/.test(state.total);
+        setState(newState);
     }
 
     return (
@@ -49,19 +52,25 @@ export default function Change() {
                     <div className="app-container change-container">
                         <h3>We Make Change</h3>
 
-                        // {% if change.error %}
-                        <div className="error-message"> Please enter a dollar amount </div>
+                        { state.error && state.hasChange &&
+                            <div className="error-message"> Please enter a dollar amount </div>
+                        }
 
-                        // {% else %}
-                        <div className="change-message">
-                           {' We can make change for ${{ change.total }} with {{ change.nickels }} nickels and {{ change.pennies }} pennies! '}
-                        </div>
-                        // {% endif %}
+
+                        { !state.hasChange &&
+                            <div className="error-message"><br/> </div>
+                        }
+
+                        { !state.error && state.hasChange &&
+                            <div className="change-message">
+                                We can make change for ${ state.total } with { state.nickels } nickels and { state.pennies } pennies!
+                            </div>
+                        }
 
                         <div className="h-row">
                             <div className="change-label">Amount in USD: $</div>
-                            <input className="change-input" name="amount" value="0.00" />
-                            <button className="change-submit" onClick={getChange} value="Make Change" />
+                            <input className="change-input" name="amount" value={state.total} onChange={onTotalChange} />
+                            <button className="change-submit" onClick={makeChange} value="Make Change" />
                         </div>
                     </div>
                 </div>
